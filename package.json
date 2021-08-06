@@ -4,9 +4,12 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "init": "tsc --init",
-        "dev": "ts-node ./src/crawler.ts"
+        "dev:build": "tsc -w",
+        "dev:start": "nodemon node ./build/crawler.js",
+        "dev": "concurrently npm:dev:*"
+    },
+    "nodemonConfig": {
+        "ignore": ["data/*"]
     },
     "keywords": [],
     "author": "",
@@ -14,16 +17,15 @@
     "devDependencies": {
         "@commitlint/cli": "^13.1.0",
         "@commitlint/config-conventional": "^13.1.0",
-        "husky": "^7.0.1",
-        "ts-node": "^10.1.0",
-        "tslib": "^2.3.0"
+        "concurrently": "^6.2.0",
+        "husky": "^7.0.1"
     },
     "dependencies": {
         "@types/cheerio": "^0.22.30",
-        "@types/node": "^16.4.12",
         "@types/superagent": "^4.1.12",
         "@types/superagent-proxy": "^2.0.0",
         "cheerio": "^1.0.0-rc.10",
+        "opencc": "^1.1.2",
         "superagent": "^6.1.0",
         "superagent-proxy": "^2.1.0",
         "typescript": "^4.3.5"

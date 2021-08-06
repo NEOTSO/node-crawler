@@ -1,44 +1,41 @@
-// import superagent from 'superagent'
 import * as superagent from 'superagent';
 import superagentProxy from 'superagent-proxy'
 superagentProxy(superagent);
 import { cookies } from './utils'
-// const cheerio = require('cheerio')
-import cheerio from 'cheerio'
+import fs from 'fs'
+import path from 'path'
 
 const proxy = process.env.http_proxy || 'http://127.0.0.1:7890';
 
+export interface Analyzer {
+    analyze: (html: string, filePath: string) => Promise<string>;
+}
+
+import ToptoonAnalyzer from './analyzer/ToptoonAnalyzer'
+
 class Crawler {
-    private url = "https://www.toptoon.net/comic/epList/80583"
+    filePath = path.resolve(__dirname, '../data/output.json')
+
+    constructor(private url: string, private analyzer: Analyzer) {
+        this.initCrawler().catch(() => { })
+    }
 
     async getRawHtml() {
         const result = await superagent.get(this.url).set('Cookie', cookies).proxy(proxy)
-        // console.log(result.text)
-        this.parse(result.text)
+        return result.text
     }
 
-    parse(html: string) {
-        const $ = cheerio.load(html)
-        const episodeArr = $('.episodeBox')
-        episodeArr.map((index, element) => {
-            console.log(index)
-            const episode = $(element).find('.title')
-            const title = $(element).find('.subTitle')
-            const date = $(element).find('.pubDate')
-            console.log(episode.text())
-            console.log(title.text())
-            console.log(date.text())
-        })
+    async initCrawler() {
+        const html = await this.getRawHtml()
+        const fileContent = await this.analyzer.analyze(html, this.filePath)
+        this.writeFile(fileContent)
     }
 
-    constructor() {
-        try {
-            console.log('cccc')
-            this.getRawHtml()
-        } catch(err) {
-            console.log(err)
-        }
+    writeFile(content: string) {
+        fs.writeFileSync(this.filePath, content)
     }
 }
 
-const crawler = new Crawler()
+const url = "https://www.toptoon.net/comic/epList/80583"
+const analyzer = new ToptoonAnalyzer()
+new Crawler(url, analyzer)
