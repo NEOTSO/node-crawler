@@ -17,7 +17,9 @@ class Crawler {
     filePath = path.resolve(__dirname, '../data/output.json')
 
     constructor(private url: string, private analyzer: Analyzer) {
-        this.initCrawler().catch(() => { })
+        this.initCrawler().catch((err) => { 
+            // console.log(err)
+        })
     }
 
     async getRawHtml() {

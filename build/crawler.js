@@ -71,7 +71,9 @@ var Crawler = /** @class */ (function () {
         this.url = url;
         this.analyzer = analyzer;
         this.filePath = path_1.default.resolve(__dirname, '../data/output.json');
-        this.initCrawler().catch(function () { });
+        this.initCrawler().catch(function (err) {
+            // console.log(err)
+        });
     }
     Crawler.prototype.getRawHtml = function () {
         return __awaiter(this, void 0, void 0, function () {

@@ -4,12 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev:build": "tsc -w",
-        "dev:start": "nodemon node ./build/crawler.js",
-        "dev": "concurrently npm:dev:*"
-    },
-    "nodemonConfig": {
-        "ignore": ["data/*"]
+        "dev": "ts-node src/crawler.ts"
     },
     "keywords": [],
     "author": "",
@@ -17,7 +12,6 @@
     "devDependencies": {
         "@commitlint/cli": "^13.1.0",
         "@commitlint/config-conventional": "^13.1.0",
-        "concurrently": "^6.2.0",
         "husky": "^7.0.1"
     },
     "dependencies": {
