@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "dev": "ts-node src/crawler.ts"
+        "dev": "nodemon --watch 'src/*/.ts' --exec 'ts-node' src/crawler.ts"
     },
     "keywords": [],
     "author": "",

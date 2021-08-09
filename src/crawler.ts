@@ -1,7 +1,7 @@
 import * as superagent from 'superagent';
 import superagentProxy from 'superagent-proxy'
 superagentProxy(superagent);
-import { cookies } from './utils'
+import { cookies } from './config/index'
 import fs from 'fs'
 import path from 'path'
 
