@@ -21,7 +21,7 @@ interface Content {
 }
 
 export default class ToptoonAnalyzer implements Analyzer {
-    async analyze(html: string, filePath: string): Promise<string> {
+    async analyze(html: string): Promise<string> {
         const parseResult: ParseResult = await this.parse(html)
         // const fileContent = this.output(parseResult, filePath)
         // return JSON.stringify(fileContent)
