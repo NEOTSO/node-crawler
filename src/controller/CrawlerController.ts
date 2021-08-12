@@ -13,20 +13,25 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+const test = (req: Request, res: Response, next: NextFunction) => {
+    console.log('test middleware')
+    next()
+}
+
 @controller('/')
-class CrawlerController {
+export class CrawlerController {
     constructor() {
         console.log(CrawlerController)
     }
 
     @get('/getdata')
     // @use(auth)
+    @use(test)
     getData(req: Request, res: Response) {
+        console.log('getdata....')
         const url = "https://www.toptoon.net/comic/epList/80583"
         const analyzer = new ToptoonAnalyzer()
         new Crawler(url, analyzer)
-        res.send('success')
+        res.send('success666')
     }
 }
-
-export default CrawlerController

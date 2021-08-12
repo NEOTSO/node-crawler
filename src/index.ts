@@ -1,12 +1,12 @@
 import express from 'express';
 import cookieSession from 'cookie-session';
-import router from './router'
-
 import "./controller/CrawlerController"
+import "./controller/UserController"
+import router from './router';
 
 const app = express()
 
-// app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 // app.use(express.json()) // To parse the incoming requests with JSON payloads
 
 app.use(

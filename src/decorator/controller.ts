@@ -3,8 +3,9 @@ import 'reflect-metadata';
 import router from '../router';
 import { Methods } from './request';
 
-console.log('xxxx')
-console.log(router)
+router.get('/test', (req, res) => {
+    res.send('test api')
+})
 
 export const controller = (root: string): ClassDecorator => {
     return (target) => {
@@ -16,7 +17,15 @@ export const controller = (root: string): ClassDecorator => {
             if (path && method) {
                 const fullPath = root === '/' ? path: `${root}${path}`
                 try {
-                    router[method](fullPath, ...middlewares, handler)
+                    console.log('method')
+                    console.log(method)
+                    console.log(fullPath)
+                    console.log(middlewares)
+                    if (middlewares && middlewares.length) {
+                        router[method](fullPath, ...middlewares, handler)
+                    } else {
+                        router[method](fullPath, handler)
+                    }
                 } catch(err) {
                     console.log(err)
                 }

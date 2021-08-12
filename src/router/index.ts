@@ -1,6 +1,9 @@
 import { Router } from 'express';
 
-console.log('fff')
-console.log(Router())
+const router = Router()
 
-export default Router();
+router.get('/', (req, res) => {
+    res.send('home')
+})
+
+export default router;
