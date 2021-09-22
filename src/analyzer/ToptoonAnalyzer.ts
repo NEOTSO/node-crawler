@@ -34,7 +34,7 @@ export default class ToptoonAnalyzer implements Analyzer {
         const episodeArr: Episode[] = []
 
         await Promise.all(episodeObj.map(async (index, element) => {
-            const title = await this.simplified($(element).find('.subTitle').text())
+            const title = await this.simplified($(element).find('.subTitle').text()) || '长期休刊公告'
             const filePath = path.resolve(__dirname, `../../data/toptoon/${index + 1}.${title}`)
             this.mkdir(filePath)
             const date = $(element).find('.pubDate').text()

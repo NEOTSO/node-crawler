@@ -42,26 +42,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var cheerio_1 = __importDefault(require("cheerio"));
 var opencc_1 = require("opencc");
 var fs_1 = __importDefault(require("fs"));
+var path_1 = __importDefault(require("path"));
+var utils_1 = require("../utils");
 var ToptoonAnalyzer = /** @class */ (function () {
     function ToptoonAnalyzer() {
     }
-    ToptoonAnalyzer.prototype.analyze = function (html, filePath) {
+    ToptoonAnalyzer.prototype.analyze = function (html) {
         return __awaiter(this, void 0, void 0, function () {
-            var parseResult, fileContent;
+            var parseResult;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.parse(html)];
+                    case 0: return [4 /*yield*/, this.parse(html)
+                        // const fileContent = this.output(parseResult, filePath)
+                        // return JSON.stringify(fileContent)
+                    ];
                     case 1:
                         parseResult = _a.sent();
-                        fileContent = this.output(parseResult, filePath);
-                        return [2 /*return*/, JSON.stringify(fileContent)];
+                        // const fileContent = this.output(parseResult, filePath)
+                        // return JSON.stringify(fileContent)
+                        return [2 /*return*/, JSON.stringify(parseResult)];
                 }
             });
         });
     };
     ToptoonAnalyzer.prototype.parse = function (html) {
         return __awaiter(this, void 0, void 0, function () {
-            var $, episodeObj, episodeArr;
+            var $, episodeObj, episodeArr, parseResult;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -70,12 +76,14 @@ var ToptoonAnalyzer = /** @class */ (function () {
                         episodeObj = $('.episodeBox');
                         episodeArr = [];
                         return [4 /*yield*/, Promise.all(episodeObj.map(function (index, element) { return __awaiter(_this, void 0, void 0, function () {
-                                var title, date;
+                                var title, filePath, date;
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0: return [4 /*yield*/, this.simplified($(element).find('.subTitle').text())];
                                         case 1:
-                                            title = _a.sent();
+                                            title = (_a.sent()) || '长期休刊公告';
+                                            filePath = path_1.default.resolve(__dirname, "../../data/toptoon/" + (index + 1) + "." + title);
+                                            this.mkdir(filePath);
                                             date = $(element).find('.pubDate').text();
                                             episodeArr.push({ title: title, date: date });
                                             return [2 /*return*/];
@@ -84,12 +92,21 @@ var ToptoonAnalyzer = /** @class */ (function () {
                             }); }))];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/, {
-                                time: (new Date()).getTime(),
-                                data: episodeArr,
-                            }];
+                        parseResult = {
+                            // time: (new Date()).getTime(),
+                            time: utils_1.formatTime(new Date()),
+                            data: episodeArr,
+                        };
+                        console.log('### output ###');
+                        console.log(parseResult);
+                        return [2 /*return*/, parseResult];
                 }
             });
+        });
+    };
+    ToptoonAnalyzer.prototype.mkdir = function (filePath) {
+        fs_1.default.mkdir(filePath, { recursive: true }, function (err) {
+            console.log(err);
         });
     };
     ToptoonAnalyzer.prototype.simplified = function (str) {
@@ -106,15 +123,6 @@ var ToptoonAnalyzer = /** @class */ (function () {
                 }
             });
         });
-    };
-    ToptoonAnalyzer.prototype.output = function (result, filePath) {
-        console.log(result);
-        var fileContent = {};
-        if (fs_1.default.existsSync(filePath)) {
-            fileContent = JSON.parse(fs_1.default.readFileSync(filePath, 'utf-8'));
-        }
-        fileContent[result.time] = result.data;
-        return fileContent;
     };
     return ToptoonAnalyzer;
 }());

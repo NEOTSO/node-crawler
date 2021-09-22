@@ -38,6 +38,6 @@ class Crawler {
     }
 }
 
-const url = "https://www.toptoon.net/comic/epList/80583"
+const url = "https://www.toptoon.net/comic/epList/80364"
 const analyzer = new ToptoonAnalyzer()
 new Crawler(url, analyzer)

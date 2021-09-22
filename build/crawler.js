@@ -61,7 +61,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var superagent = __importStar(require("superagent"));
 var superagent_proxy_1 = __importDefault(require("superagent-proxy"));
 superagent_proxy_1.default(superagent);
-var utils_1 = require("./utils");
+var index_1 = require("./config/index");
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
 var proxy = process.env.http_proxy || 'http://127.0.0.1:7890';
@@ -80,7 +80,7 @@ var Crawler = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, superagent.get(this.url).set('Cookie', utils_1.cookies).proxy(proxy)];
+                    case 0: return [4 /*yield*/, superagent.get(this.url).set('Cookie', index_1.cookies).proxy(proxy)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.text];
@@ -110,6 +110,6 @@ var Crawler = /** @class */ (function () {
     };
     return Crawler;
 }());
-var url = "https://www.toptoon.net/comic/epList/80583";
+var url = "https://www.toptoon.net/comic/epList/80364";
 var analyzer = new ToptoonAnalyzer_1.default();
 new Crawler(url, analyzer);
